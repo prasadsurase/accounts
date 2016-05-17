@@ -5,13 +5,17 @@
   getDefaultProps: ->
     records: []
 
+  addRecord: (record) ->
+    records = React.addons.update(@state.records, { $push: [record] })
+    @setState records: records
+
   render: ->
     React.DOM.div
       className: 'records'
       React.DOM.h2
         className: 'title'
         'Records'
-      React.createElement RecordForm
+      React.createElement RecordForm, handleNewRecord: @addRecord
       React.DOM.table
         className: 'table table-bordered'
         React.DOM.thead null,
