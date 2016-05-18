@@ -29,6 +29,23 @@
     records = React.addons.update(@state.records, { $splice: [[index, 1]] })
     @setState records: records
     ###
+  
+  credits: ->
+    credits = @state.records.filter (val) ->
+      val.amount >= 0
+    credits.reduce ((prev, curr) ->
+      prev + parseFloat(curr.amount)
+    ), 0
+  
+  debits: ->
+    debits = @state.records.filter (val) ->
+      val.amount >= 0
+    debits.reduce ((prev, curr) ->
+      prev + parseFloat(curr.amount)
+    ), 0
+
+  balance: ->
+    @credits() + @debits()
 
   render: ->
     React.DOM.div
@@ -36,7 +53,12 @@
       React.DOM.h2
         className: 'title'
         'Records'
+      React.createElement AmountBox, type: 'success', amount: @credits(), text: 'Credit'
+      React.createElement AmountBox, type: 'danger', amount: @debits(), text: 'Debit'
+      React.createElement AmountBox, type: 'info', amount: @balance(), text: 'Balance'
+      React.DOM.hr null
       React.createElement RecordForm, handleNewRecord: @addRecord
+      React.DOM.hr null
       React.DOM.table
         className: 'table table-bordered'
         React.DOM.thead null,
