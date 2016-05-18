@@ -15,6 +15,21 @@
       success: () =>
         @props.handleDeleteRecord @props.record
 
+  handleUpdate: (e) ->
+    e.preventDefault()
+    data =
+      date: ReactDOM.findDOMNode(@refs.date).value
+      title: ReactDOM.findDOMNode(@refs.title).value
+      amount: ReactDOM.findDOMNode(@refs.amount).value
+    $.ajax
+      method: 'PUT'
+      url: "/records/#{ @props.record.id }"
+      data:
+        record: data
+      success: (data) =>
+        @setState edit: false
+        @props.handleUpdateRecord @props.record, data
+
   renderForm: ->
     React.DOM.tr null,
       React.DOM.td null,
