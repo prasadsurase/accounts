@@ -15,6 +15,7 @@
     ###
 
   updateRecord: (record, data) ->
+    records = @state.records.slice()
     index = records.indexOf record
     records = React.addons.update(@state.records, { $splice: [[index, 1, data]] })
     @setState records: records
@@ -39,7 +40,7 @@
   
   debits: ->
     debits = @state.records.filter (val) ->
-      val.amount >= 0
+      val.amount < 0
     debits.reduce ((prev, curr) ->
       prev + parseFloat(curr.amount)
     ), 0
